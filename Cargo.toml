@@ -1,0 +1,11 @@
+[package]
+name = "bittrex"
+version = "0.1.0"
+authors = ["Robert May <rob@afternoonrobot.co.uk>"]
+
+[dependencies]
+hex = "*"
+hyper = "*"
+reqwest = "0.7"
+ring = "*"
+serde_json = "*"
