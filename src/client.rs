@@ -1,4 +1,4 @@
-use reqwest::{self, Error, Response};
+use reqwest::{self, Error};
 use ring;
 use ring::{digest, hmac, rand};
 use hex::ToHex;
@@ -24,21 +24,21 @@ impl Client {
         })
     }
 
-    pub fn get_balances(&self) -> Result<Option<Balances>, serde_json::Error> {
+    pub fn get_balances(&self) -> Result<Option<Response>, serde_json::Error> {
         let url = Url::parse("https://bittrex.com/api/v1.1/account/getbalances").unwrap();
         let body: String = self.signed_get_request(url).unwrap();
-        let balances: Balances = serde_json::from_str(&body)?;
+        let balances: Response = serde_json::from_str(&body)?;
 
         Ok(
             Some(balances)
         )
     }
 
-    pub fn get_balance(&self, currency: &str) -> Result<Option<Balance>, serde_json::Error> {
+    pub fn get_balance(&self, currency: &str) -> Result<Option<Response>, serde_json::Error> {
         let url = Url::parse_with_params("https://bittrex.com/api/v1.1/account/getbalances",
                                          &[("currency", currency)]).unwrap();
         let body: String = self.signed_get_request(url).unwrap();
-        let balances: Balance = serde_json::from_str(&body)?;
+        let balances: Response = serde_json::from_str(&body)?;
 
         Ok(
             Some(balances)
@@ -54,7 +54,7 @@ impl Client {
             .append_pair("nonce", &format!("{:?}", nonce));
         let signed_url: &str = url.as_str();
         let signature = self.sign_request(signed_url).unwrap();
-        let client = reqwest::Client::new().unwrap();
+        let client = reqwest::Client::new()?;
         let mut request = client.get(signed_url)?
             .header(BittrexApiSign(signature))
             .build();
