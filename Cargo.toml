@@ -4,8 +4,12 @@ version = "0.1.0"
 authors = ["Robert May <rob@afternoonrobot.co.uk>"]
 
 [dependencies]
+decimal = "1.0"
 hex = "*"
 hyper = "*"
 reqwest = "0.7"
 ring = "*"
+serde = "*"
+serde_derive = "*"
 serde_json = "*"
+url = "*"
